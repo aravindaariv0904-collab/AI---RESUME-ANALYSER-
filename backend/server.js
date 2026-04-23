@@ -42,12 +42,18 @@ mongoose.connection.on('error', (err) => console.error('Mongoose connection erro
 mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({ 
     status: 'ok', 
     env: process.env.NODE_ENV,
-    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    path: req.path
   });
+});
+
+// Root API
+app.get('/api', (req, res) => {
+  res.json({ message: 'AI Resume Analyzer API is running' });
 });
 
 // Routes
