@@ -60,6 +60,16 @@ app.get('/api', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/resume', require('./routes/resume'));
 
+// Catch-all debug
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
+    path: req.path,
+    url: req.url,
+    method: req.method
+  });
+});
+
 // Export for Vercel
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
