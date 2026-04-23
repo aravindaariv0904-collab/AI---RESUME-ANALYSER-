@@ -10,22 +10,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// DEBUG: Root log
-app.use((req, res, next) => {
-  console.log(`Incoming request: ${req.method} ${req.url}`);
-  next();
-});
-
-// Health check
-app.get(['/api/health', '/health'], (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    uri: !!process.env.MONGODB_URI,
-    path: req.path
-  });
-});
-
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/resume', require('./routes/resume'));
@@ -63,21 +47,6 @@ mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'
 
 // ... removed routes from here ...
 
-// Catch-all debug
-app.use((req, res) => {
-  res.status(404).json({
-    message: 'Route not found',
-    path: req.path,
-    url: req.url,
-    method: req.method
-  });
+app.listen(PORT, () => {
+  console.log(`Backend server running on http://localhost:${PORT}`);
 });
-
-// Export for Vercel
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Backend server running on http://localhost:${PORT}`);
-  });
-}
-
-module.exports = app;
