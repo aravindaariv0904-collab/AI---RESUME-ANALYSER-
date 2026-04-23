@@ -47,6 +47,7 @@ app.get(['/api/health', '/health'], (req, res) => {
     status: 'ok', 
     env: process.env.NODE_ENV,
     db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    uri_found: !!process.env.MONGODB_URI,
     path: req.path
   });
 });
