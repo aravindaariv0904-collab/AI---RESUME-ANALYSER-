@@ -25,12 +25,6 @@ const connectDB = async () => {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      maxPoolSize: 50,        // Optimized for production concurrency
-      minPoolSize: 10,        // Pre-warmed connections
-      maxIdleTimeMS: 300000,  // 5 minutes
-      connectTimeoutMS: 10000,
-      socketTimeoutMS: 30000,
-      serverSelectionTimeoutMS: 5000,
     });
     
     console.log(`✅ MongoDB Connected: ${process.env.NODE_ENV === 'production' ? 'Atlas' : 'In-Memory'} at ${uri}`);
@@ -46,6 +40,15 @@ connectDB();
 mongoose.connection.on('connected', () => console.log('Mongoose connected to MongoDB'));
 mongoose.connection.on('error', (err) => console.error('Mongoose connection error:', err));
 mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    env: process.env.NODE_ENV,
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
+});
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));

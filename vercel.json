@@ -20,7 +20,12 @@
     },
     {
       "source": "/(.*)",
-      "destination": "website/$1"
+      "destination": "website/$1",
+      "check": true
+    },
+    {
+      "source": "/(.*)",
+      "destination": "website/index.html"
     }
   ]
 }
