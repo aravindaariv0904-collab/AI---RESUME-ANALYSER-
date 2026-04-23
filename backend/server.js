@@ -10,6 +10,26 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// DEBUG: Root log
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
+
+// Health check
+app.get(['/api/health', '/health'], (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    uri: !!process.env.MONGODB_URI,
+    path: req.path
+  });
+});
+
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/resume', require('./routes/resume'));
+
 // Connect to MongoDB
 const connectDB = async () => {
   try {
@@ -41,25 +61,7 @@ mongoose.connection.on('connected', () => console.log('Mongoose connected to Mon
 mongoose.connection.on('error', (err) => console.error('Mongoose connection error:', err));
 mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
 
-// Health check
-app.get(['/api/health', '/health'], (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    env: process.env.NODE_ENV,
-    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    uri_found: !!process.env.MONGODB_URI,
-    path: req.path
-  });
-});
-
-// Root API
-app.get('/api', (req, res) => {
-  res.json({ message: 'AI Resume Analyzer API is running' });
-});
-
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/resume', require('./routes/resume'));
+// ... removed routes from here ...
 
 // Catch-all debug
 app.use((req, res) => {
