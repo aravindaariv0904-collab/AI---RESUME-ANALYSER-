@@ -6,3 +6,5 @@ build/
 *.log
 uploads/*
 !uploads/.gitignore
+__pycache__/
+*.pyc
