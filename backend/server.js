@@ -30,7 +30,7 @@ const connectDB = async () => {
     console.log(`✅ MongoDB Connected: ${process.env.NODE_ENV === 'production' ? 'Atlas' : 'In-Memory'} at ${uri}`);
   } catch (err) {
     console.error('❌ MongoDB connection error:', err);
-    process.exit(1); // Exit on connection failure in production
+    // Don't exit in serverless environment
   }
 };
 
