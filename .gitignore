@@ -8,3 +8,4 @@ uploads/*
 !uploads/.gitignore
 __pycache__/
 *.pyc
+\n.netlify/\n

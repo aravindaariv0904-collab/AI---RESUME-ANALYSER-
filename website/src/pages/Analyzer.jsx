@@ -112,7 +112,7 @@ const Analyzer = () => {
                 Next Steps
               </h4>
               <ul className="space-y-4">
-                {result.recommendations.map((r, i) => (
+                {((result.projectSuggestions || []).concat(result.hackathonsAndInternships || [])).map((r, i) => (
                   <li key={i} className="flex gap-3 text-slate-300 text-sm">
                     <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
                     {r}
