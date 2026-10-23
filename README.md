@@ -1,4 +1,6 @@
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://aravind-aariv-airesumeanalyser.netlify.app)\n\n# 🤖 AI Resume Analyzer & ATS Optimization Engine
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://aravind-aariv-airesumeanalyser.netlify.app)
+
+# 🤖 AI Resume Analyzer & ATS Optimization Engine
 
 [![CI Status](https://github.com/aravindaariv0904-collab/AI---RESUME-ANALYSER-/actions/workflows/ci.yml/badge.svg)](https://github.com/aravindaariv0904-collab/AI---RESUME-ANALYSER-/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
