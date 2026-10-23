@@ -5,6 +5,20 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 
+/**
+ * Get JWT secret from environment — fail hard if not set.
+ * Never falls back to a hardcoded value.
+ */
+function getJwtSecret(res) {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    console.error('FATAL: JWT_SECRET environment variable is not set');
+    res.status(500).json({ msg: 'Server configuration error' });
+    return null;
+  }
+  return secret;
+}
+
 // @route   POST api/auth/register
 // @desc    Register a student user
 router.post('/register', async (req, res) => {
@@ -35,10 +49,13 @@ router.post('/register', async (req, res) => {
       }
     };
 
+    const secret = getJwtSecret(res);
+    if (!secret) return;
+
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'secret123',
-      { expiresIn: 360000 },
+      secret,
+      { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
@@ -72,10 +89,13 @@ router.post('/login', async (req, res) => {
       }
     };
 
+    const secret = getJwtSecret(res);
+    if (!secret) return;
+
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'secret123',
-      { expiresIn: 360000 },
+      secret,
+      { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
