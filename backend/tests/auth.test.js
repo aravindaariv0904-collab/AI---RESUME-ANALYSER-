@@ -3,6 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
+// Set required environment variables for tests BEFORE importing routes
+process.env.JWT_SECRET = 'test-jwt-secret-for-unit-tests-only-not-for-production';
+process.env.NODE_ENV = 'test';
+
 // Create mock app
 const app = express();
 app.use(express.json());
